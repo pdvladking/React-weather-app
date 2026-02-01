@@ -9,16 +9,16 @@ function App() {
 
   // Function to fetch weather data
   const fetchWeather = async (city) => {
-    try {
-      const res = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=18ead549d83d488cd78bf57fc517177c&units=metric`
-      );
-      const data = await res.json();
-      setWeather(data);
-    } catch (error) {
-      console.error('Error fetching weather:', error);
-    }
-  };
+  try {
+    const res = await fetch(
+      `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${import.meta.env.VITE_OPENWEATHER_API_KEY}&units=metric`
+    );
+    const data = await res.json();
+    setWeather(data);
+  } catch (error) {
+    console.error("Error fetching weather:", error);
+  }
+};
 
   // Determine condition for background
   const condition = weather?.weather?.[0]?.main || 'Clear';
