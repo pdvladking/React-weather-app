@@ -3,6 +3,8 @@
 A simple weather application built with React, Vite and TailwindCSS.
 It fetches live weather data from the [OpenWeatherMap API] and displays it with a dynamic background.
 
+## Live [https://react-weather-app-two-tau.vercel.app/]
+
 ## Features 
 
 - Search for any city and get current weather data
