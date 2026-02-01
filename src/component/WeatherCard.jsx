@@ -7,12 +7,9 @@ function WeatherCard({ weather }) {
       <p className="text-2xl">{weather.main.temp}°C</p>
       <p>{weather.weather[0].description}</p>
 
-      <img
-        src="/assets/undraw_wind-turbine_4z2a.svg"
-        alt="Weather illustration"
-        className="mx-auto mt-4"
-      />
+      <img src="{turbineImg}" alt="Weather illustration" className="mx-auto mt-4" />
     </div>
   );
 }
+
 export default WeatherCard;
