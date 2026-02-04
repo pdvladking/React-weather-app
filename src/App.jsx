@@ -1,40 +1,33 @@
 import { useState } from 'react';
-import Header from './component/Header';
+import { fetchWeather } from './api/weather';
+import Layout from './component/Layout';
 import SearchBar from './component/SearchBar';
 import WeatherCard from './component/WeatherCard';
-import Background from './component/background';
 
 function App() {
   const [weather, setWeather] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  // Function to fetch weather data
-  const fetchWeather = async (city) => {
-  try {
-    const res = await fetch(
-      `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${import.meta.env.VITE_OPENWEATHER_API_KEY}&units=metric`
-    );
-    const data = await res.json();
-    setWeather(data);
-  } catch (error) {
-    console.error("Error fetching weather:", error);
-  }
-};
-
-  // Determine condition for background
-  const condition = weather?.weather?.[0]?.main || 'Clear';
+  const handleSearch = async (city) => {
+    setLoading(true);
+    setError('');
+    try {
+      const data = await fetchWeather(city);
+      setWeather(data);
+    } catch (err) {
+      setError(err.message || 'City not found or API error');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <div className="min-h-screen flex flex-col relative">
-      {/* Dynamic background */}
-      <Background condition={condition} />
-
-      {/* Overlay content */}
-      <div className="absolute inset-0 flex flex-col items-center">
-        <Header />
-        <SearchBar onSearch={fetchWeather} />
-        <WeatherCard weather={weather} />
-      </div>
-    </div>
+    <Layout>
+      <h1 className="text-4xl font-extrabold text-blue-700 mb-8 text-center">Weather App</h1>
+      <SearchBar onSearch={handleSearch} />
+      <WeatherCard weather={weather} loading={loading} error={error} />
+    </Layout>
   );
 }
 
