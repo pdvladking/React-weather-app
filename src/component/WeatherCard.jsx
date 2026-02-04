@@ -1,7 +1,7 @@
 function WeatherCard({ weather, loading, error }) {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
-  if (!weather) return <p>Search for a city to see weather.</p>;
+  if (!weather) return <p className="text-center">Search for a city to see weather.</p>;
 
   return (
     <div className="bg-white shadow-lg rounded-xl p-6 max-w-sm mx-auto text-center">
