@@ -24,5 +24,5 @@ It fetches live weather data from the [OpenWeatherMap API] and displays it with 
    ```bash
    git clone https://github.com/pdvladking/react-weather-app.git
    cd react-weather-app
-
-2. npm install
+   npm install
+   npm run dev
