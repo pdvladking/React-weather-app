@@ -1,13 +1,5 @@
-import {
-  WiDaySunny,
-  WiCloud,
-  WiRain,
-  WiSnow,
-  WiThunderstorm,
-  WiFog,
-} from "react-icons/wi";
+import { WiCloud, WiDaySunny, WiFog, WiRain, WiSnow, WiThunderstorm } from 'react-icons/wi';
 
-// 🎨 Icon + animation mapping
 const weatherIcons = {
   Clear: <WiDaySunny className="text-4xl text-yellow-600 animate-float" />,
   Clouds: <WiCloud className="text-4xl text-gray-700 animate-pulse" />,
@@ -17,14 +9,13 @@ const weatherIcons = {
   Mist: <WiFog className="text-4xl text-gray-500 animate-float" />,
 };
 
-// 🎨 Background gradient mapping
 const weatherBackgrounds = {
-  Clear: "bg-gradient-to-r from-yellow-200 to-yellow-400",
-  Clouds: "bg-gradient-to-r from-gray-200 to-gray-400",
-  Rain: "bg-gradient-to-r from-blue-200 to-blue-500",
-  Snow: "bg-gradient-to-r from-blue-100 to-blue-300",
-  Thunderstorm: "bg-gradient-to-r from-purple-300 to-purple-600",
-  Mist: "bg-gradient-to-r from-gray-100 to-gray-300",
+  Clear: 'bg-gradient-to-r from-yellow-200 to-yellow-400',
+  Clouds: 'bg-gradient-to-r from-gray-200 to-gray-400',
+  Rain: 'bg-gradient-to-r from-blue-200 to-blue-500',
+  Snow: 'bg-gradient-to-r from-blue-100 to-blue-300',
+  Thunderstorm: 'bg-gradient-to-r from-purple-300 to-purple-600',
+  Mist: 'bg-gradient-to-r from-gray-100 to-gray-300',
 };
 
 function WeeklyWeatherCard({ forecast }) {
@@ -36,15 +27,23 @@ function WeeklyWeatherCard({ forecast }) {
     );
   }
 
-  // Group forecast data by date
+  // Current time
+  const now = new Date();
+
+  // Group forecast data by date, skip anything before now
   const daily = {};
   forecast.list.forEach((item) => {
-    const date = item.dt_txt.split(" ")[0];
-    if (!daily[date]) daily[date] = [];
-    daily[date].push(item);
+    const itemDate = new Date(item.dt_txt);
+    if (itemDate >= now) {   // ✅ only keep forecasts from now onward
+      const dateKey = item.dt_txt.split(" ")[0];
+      if (!daily[dateKey]) daily[dateKey] = [];
+      daily[dateKey].push(item);
+    }
   });
 
-  const days = Object.keys(daily).slice(0, 7);
+  // Get next 7 days
+  const allDates = Object.keys(daily).sort();
+  const days = allDates.slice(0, 7);
 
   function getDayName(dateString) {
     const date = new Date(dateString);
@@ -63,7 +62,9 @@ function WeeklyWeatherCard({ forecast }) {
           temps.reduce((a, b) => a + b, 0) / temps.length
         ).toFixed(1);
         const condition = daily[date][0].weather[0].main;
-        const icon = weatherIcons[condition] || <WiDaySunny className="text-4xl animate-float" />;
+        const icon = weatherIcons[condition] || (
+          <WiDaySunny className="text-4xl animate-float" />
+        );
         const bg = weatherBackgrounds[condition] || "bg-white";
 
         return (
